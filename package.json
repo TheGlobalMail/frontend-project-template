@@ -1,7 +1,6 @@
 {
-  "name": "front-end-project-template",
+  "name": "rockart",
   "version": "0.0.0",
-  "description": "Template repository for front-end projects",
   "main": "index.js",
   "devDependencies": {
     "grunt": "~0.4.0",
