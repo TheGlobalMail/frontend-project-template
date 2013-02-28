@@ -5,7 +5,7 @@
 
 1. `$ git clone --depth 1 -o template git@github.com:TheGlobalMail/frontend-project-template.git new-project`
    This will clone the template into `./new-project` without history and the remote is named `templated` (isntead of `origin`)
-2. Immediately checkout master to a template branch (`$ git checkout -b _template`)... this will serve as a middleman for integrating changes back-and-forth between the project and the template. This is optional. Switch back to master.
+2. *Optional.* Immediately checkout master to a template branch (`$ git checkout -b _template template/master`)... this will serve as a middleman for integrating changes back-and-forth between the project and the template. Switch back to master.
 3. Update `name` in `component.json` and `package.json`. Update this `README.md` stripping out this info, updating the title, etc. Update `<title/>` in `app/index.html`.
 4. Commit the name changes
 5. Create a new repo on GitHub/whatever for the project and do `$ git remote add origin git@somerepo.git`
@@ -24,8 +24,8 @@
 
 {A short description about the project.}
 
-**Staging URL:** [http://cool-project.herokuapp.com/](http://cool-project.herokuapp.com/)
-**Production URL:** [http://cool-project.theglobalmail.org/](http://cool-project.theglobalmail.org/)
+* **Staging URL:** [http://cool-project.herokuapp.com/](http://cool-project.herokuapp.com/)
+* **Production URL:** [http://cool-project.theglobalmail.org/](http://cool-project.theglobalmail.org/)
 
 ## Installing
 

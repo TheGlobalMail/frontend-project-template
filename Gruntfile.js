@@ -177,9 +177,14 @@ module.exports = function(grunt) {
       }
     },
 
-    // TODO: Asset revving
     rev: {
-      html: ['<%= project.dist %>/index.html']
+      options: {
+        algorithm: 'sha512',
+        length: 16
+      },
+      files: {
+        src: ['<%= project.dist %>/js/*.js', '<%= project.dist %>/styles/*.css'],
+      }
     },
 
     // A whitelist of extra files to copy
@@ -228,7 +233,7 @@ module.exports = function(grunt) {
     'concat',
     'copy:dist',
     'uglify',
-    // TODO 'rev',
+    'rev',
     'usemin'
   ]);
 
