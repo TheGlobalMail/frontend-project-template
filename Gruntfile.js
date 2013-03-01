@@ -129,6 +129,7 @@ module.exports = function(grunt) {
           '.tmp/styles/main.css': '<%= project.app %>/styles/main.less'
         }
       },
+
       dist: {
         yuicompress: true,
         files: {
@@ -207,6 +208,19 @@ module.exports = function(grunt) {
           ]
         }]
       }
+    },
+
+    cdn: {
+      dist: {
+        src: ['<%= project.dist %>/index.html'],
+        cdn: 'http://newproject-assets.theglobalmail.org'
+      },
+
+      staging: {
+        src: ['<%= cdn.dist.src %>'],
+        cdn: 'http://newproject-staging-assets.theglobalmail.org'
+      }
+      }
     }
   });
 
@@ -227,19 +241,32 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('build', [
-    'jshint:with_overrides',
-    'clean:dist',
-    'less:dist',
-    'useminPrepare',
-    'imagemin',
-    'concat',
-    'copy:dist',
-    'uglify',
-    'rev',
-    'usemin',
-    'htmlmin'
-  ]);
+  grunt.registerTask('build', function(target) {
+    var targets = [
+      'jshint:with_overrides',
+      'clean:dist',
+      'less:dist',
+      'useminPrepare',
+      'imagemin',
+      'concat',
+      'copy:dist',
+      'uglify',
+      'rev',
+      'usemin'
+    ];
+
+    if (target === 'staging') {
+      targets.push('cdn:staging');
+    } else {
+      targets.push('cdn:dist');
+    }
+
+    targets.concat([
+      'htmlmin'
+    ]);
+
+    grunt.task.run(targets);
+  });
 
   // TODO: Testing
   grunt.registerTask('test');

@@ -20,7 +20,8 @@
     "grunt-regarde": "~0.1.1",
     "grunt-contrib-concat": "~0.1.3",
     "grunt-contrib-htmlmin": "~0.1.1",
-    "grunt-rev": "~0.1.0"
+    "grunt-rev": "~0.1.0",
+    "grunt-cdn": "git://github.com/caphun/grunt-cdn.git",
   },
   "scripts": {
     "test": "grunt test"

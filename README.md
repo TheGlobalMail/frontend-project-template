@@ -33,12 +33,19 @@
 2. Run `npm install`
 3. Run `./bower-install` (this script will ensure bootstrap is nested in tgm-bootstrap)
 
+## Setting up the CDN
+
+
+## Setting up Fast.ly
+
+
 ## Development server and building
 
 The build system is made on Grunt v0.4+
 
-* `grunt` will build the whole project into a `./dist` folder
-* `grunt server` will start a dev server (default port 9000) with livereload, etc. LESS is compiled automatically.
+* `$ grunt` will build the whole project for production into a `./dist` folder
+* `$ grunt build:staging` Build for staging (different CDN url)
+* `$ grunt server` will start a dev server (default port 9000) with livereload, etc. LESS is compiled automatically.
 
 The `dist/` folder isn't ignored by Git, so be careful not run it on a development branch and then accidentally commit it.
 
@@ -48,13 +55,12 @@ For staging, use a free Heroku instance so we don't have to worry about caching.
 
 1. `$ git checkout -b deploy`
 2. `grunt`
-3. *Optional* `$ rm dist/components` (Probably isn't used in a built version of the app)
-4. `$ git add dist/`
-5. `$ git commit -m "Build" dist/`
-6. `$ ./cdn-deploy.js [staging|production] {RACKSPACE_API_KEY}`
-7. *Staging only* `$ git push heroku deploy:master --force`
-8. `$ git checkout master`
-9. `$ git branch -D deploy`
+3. `$ git add dist/`
+4. `$ git commit -m "Build" dist/`
+5. `$ ./cdn-deploy.js [staging|production] {RACKSPACE_API_KEY}`
+6. *Staging only* `$ git push heroku deploy:master --force`
+7. `$ git checkout master`
+8. `$ git branch -D deploy`
 
 ## Adding libraries, frameworks, dependencies
 
