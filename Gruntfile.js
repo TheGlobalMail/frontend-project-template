@@ -167,13 +167,16 @@ module.exports = function(grunt) {
 
     htmlmin: {
       dist: {
-        options: {},
-        files: [{
-          expand: true,
-          cwd: '<%= project.app %>',
-          src: '*.html',
-          dest: '<%= project.dist %>'
-        }]
+        options: {
+          removeComments: true,
+          collapseWhitespace: true,
+          collapseBolleanAttributes: true,
+          removeAttributeQuotes: true,
+          removeRedundantAttributes: true
+        },
+        files: {
+          '<%= project.dist %>/index.html': '<%= project.dist %>/index.html'
+        }
       }
     },
 
@@ -198,6 +201,7 @@ module.exports = function(grunt) {
           cwd: '<%= project.app %>',
           dest: '<%= project.dist %>',
           src: [
+            'index.html',
             '*.{ico,txt}',
             '.htaccess'
           ]
@@ -229,12 +233,12 @@ module.exports = function(grunt) {
     'less:dist',
     'useminPrepare',
     'imagemin',
-    'htmlmin',
     'concat',
     'copy:dist',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'htmlmin'
   ]);
 
   // TODO: Testing
