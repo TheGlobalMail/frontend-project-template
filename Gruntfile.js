@@ -278,7 +278,7 @@ module.exports = function(grunt) {
 
     if (target === 'staging') {
       targets.push('cdn:staging');
-    } else {
+    } else if (target !== 'dev') {
       targets.push('cdn:dist');
     }
 
