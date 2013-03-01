@@ -22,7 +22,7 @@
 <!-- Update below with project details -->
 # {Project Name}
 
-{A short description about the project.}
+> {A short description about the project.}
 
 * **Staging URL:** [http://cool-project.herokuapp.com/](http://cool-project.herokuapp.com/)
 * **Production URL:** [http://cool-project.theglobalmail.org/](http://cool-project.theglobalmail.org/)
