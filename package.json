@@ -22,6 +22,7 @@
     "grunt-contrib-htmlmin": "~0.1.1",
     "grunt-rev": "~0.1.0",
     "grunt-cdn": "git://github.com/caphun/grunt-cdn.git",
+    "grunt-cloudfiles": "0.0.3"
   },
   "scripts": {
     "test": "grunt test"

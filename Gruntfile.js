@@ -220,6 +220,27 @@ module.exports = function(grunt) {
         src: ['<%= cdn.dist.src %>'],
         cdn: 'http://newproject-staging-assets.theglobalmail.org'
       }
+    },
+
+    cloudfiles: {
+      staging: {
+        'user': 'theglobalmail',
+        'key': '',
+        'upload': [{
+          'container': 'newproject-staging-assets',
+          'src': '<%= project.dist %>/**/*',
+          'dist': ''
+        }]
+      },
+
+      dist: {
+        'user': 'theglobalmail',
+        'key': '',
+        'upload': [{
+          'container': 'newproject-assets',
+          'src': '<%= project.dist %>/**/*',
+          'dist': ''
+        }]
       }
     }
   });
