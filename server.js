@@ -14,3 +14,5 @@ site.get("*", function(req, res) {
 // Actually listen
 site.listen(process.env.PORT || 8081);
 console.log('Server listening on ' + (process.env.PORT || 8081));
+
+module.exports = site;

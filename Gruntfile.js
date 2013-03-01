@@ -52,6 +52,10 @@ module.exports = function(grunt) {
       }
     },
 
+    server: {
+      script: './server.js'
+    },
+
     // develpment server
     connect: {
       options: {
@@ -66,10 +70,10 @@ module.exports = function(grunt) {
         options: {
           middleware: function(connect) {
             return [
-              lrSnippet,
               mountFolder(connect, '.tmp'),
-              // change to project.app?
-              mountFolder(connect, 'app')
+              mountFolder(connect, project.app),
+              indexServer(project.app + '/index.html'),
+              lrSnippet
             ];
           }
         }
@@ -80,7 +84,8 @@ module.exports = function(grunt) {
         options: {
           middleware: function(connect) {
             return [
-              mountFolder(connect, 'dist')
+              mountFolder(connect, 'dist'),
+              modRewrite(routes)
             ];
           }
         }
@@ -247,7 +252,29 @@ module.exports = function(grunt) {
 
   grunt.renameTask('regarde', 'watch');
 
-  grunt.registerTask('server', function(target) {
+  grunt.registerTask('dev-server', function() {
+    var fs = require("fs");
+    var express = require("express");
+    var site = express();
+
+    console.log(process.argv);
+
+    // Serve static files
+    site.use("/", express.static(__dirname + '/.tmp'));
+    site.use("/", express.static(__dirname + '/app'));
+
+    // Ensure all routes go home, client side app..
+    site.get("*", function(req, res) {
+      fs.createReadStream(__dirname + "/app/index.html").pipe(res);
+    });
+
+    // Actually listen
+    console.log('Server listening on ' + (process.env.PORT || 8081));
+
+    module.exports = site;
+  });
+
+  grunt.registerTask('xxxserver', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['connect:dist:keepalive']);
     }
