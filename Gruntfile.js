@@ -61,7 +61,7 @@ module.exports = function(grunt) {
       // Recompile LESS which will then trigger the livereload watcher below
       less: {
         files: ['app/styles/{,*/}*.less', 'app/components/tgm-bootstrap/less/*.less'],
-        tasks: ['less']
+        tasks: ['less:server']
       },
 
       /* When any main assets in `project.app` change we should reload the browser
@@ -80,10 +80,6 @@ module.exports = function(grunt) {
         ],
         tasks: ['livereload']
       }
-    },
-
-    server: {
-      script: './server.js'
     },
 
     // develpment server
