@@ -261,7 +261,7 @@ module.exports = function(grunt) {
     cloudfiles: {
       staging: {
         'user': 'theglobalmail',
-        'key': '',
+        'key': process.env.RACKSPACE_API_KEY,
         'upload': [{
           'container': 'newproject-staging-assets',
           'src': '<%= project.dist %>/**/*',
@@ -271,7 +271,7 @@ module.exports = function(grunt) {
 
       dist: {
         'user': 'theglobalmail',
-        'key': '',
+        'key': process.env.RACKSPACE_API_KEY,
         'upload': [{
           'container': 'newproject-assets',
           'src': '<%= project.dist %>/**/*',

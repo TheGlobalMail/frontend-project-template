@@ -29,9 +29,11 @@
 
 ## Installing
 
+Assuming you have `grunt-cli` and `bower` installed globally:
+
 1. Clone the repo
 2. Run `npm install`
-3. Run `./bower-install` (this script will ensure bootstrap is nested in tgm-bootstrap)
+3. Run `./bower-install` (this script will install a nested bootstrap in tgm-bootstrap so the LESS can compile properly).
 
 ## Setting up the CDN
 
