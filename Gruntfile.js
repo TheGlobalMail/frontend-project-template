@@ -3,14 +3,29 @@
 var fs = require('fs');
 var path = require('path');
 
+// Project folders (relative to this Gruntfile)
+var project = {
+  app: 'app',
+  dist: 'dist'
+};
+
 /* Load the livereload <script> snippet
  * This gets inject into our HTML in the connect dev server with middleware
  */
-var lrSnippet = function(req, res, next) {
-  var snip = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
-  // fudge the req.url so the plugin will work with pushState
-  snip({ url: 'index.html' }, res, next);
-}
+var lrSnippet = function(options) {
+  options = options || {};
+  return function(req, res, next) {
+    var snip = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
+    var r = req;
+
+    // duge request URL to force livereload-snippet injection
+    if (options.force) {
+      r = { url: '/index.html' };
+    }
+
+    snip(r, res, next);
+  }
+};
 
 var mountFolder = function(connect, dir) {
   return connect.static(path.resolve(dir));
@@ -29,12 +44,6 @@ var serveIndex = function(req, res) {
 module.exports = function(grunt) {
   // Look in package.json for grunt devDependencies and load them into grunt
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-
-  // Project folders (relative to this Gruntfile)
-  var project = {
-    app: 'app',
-    dist: 'dist'
-  };
 
   grunt.initConfig({
     // Add the project dirs into the config so we can reference
@@ -87,9 +96,10 @@ module.exports = function(grunt) {
         options: {
           middleware: function(connect) {
             return [
-              lrSnippet,
+              lrSnippet(),
               mountFolder(connect, '.tmp'),
               mountFolder(connect, project.app),
+              lrSnippet({ force: true }),
               serveIndex
             ];
           }
