@@ -1,11 +1,28 @@
 'use strict';
 
+var fs = require('fs');
+var path = require('path');
+
 /* Load the livereload <script> snippet
  * This gets inject into our HTML in the connect dev server with middleware
  */
-var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
+var lrSnippet = function(req, res, next) {
+  var snip = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
+  // fudge the req.url so the plugin will work with pushState
+  snip({ url: 'index.html' }, res, next);
+}
+
 var mountFolder = function(connect, dir) {
-  return connect.static(require('path').resolve(dir));
+  return connect.static(path.resolve(dir));
+};
+
+var serveIndex = function(req, res) {
+  var index = path.resolve(project.app + '/index.html');
+  var rs = fs.createReadStream(index);
+
+  rs.on('open', function() {
+    rs.pipe(res);
+  });
 };
 
 // Grunt!!!
@@ -70,10 +87,10 @@ module.exports = function(grunt) {
         options: {
           middleware: function(connect) {
             return [
+              lrSnippet,
               mountFolder(connect, '.tmp'),
               mountFolder(connect, project.app),
-              indexServer(project.app + '/index.html'),
-              lrSnippet
+              serveIndex
             ];
           }
         }
@@ -85,7 +102,7 @@ module.exports = function(grunt) {
           middleware: function(connect) {
             return [
               mountFolder(connect, 'dist'),
-              modRewrite(routes)
+              serveIndex
             ];
           }
         }
@@ -252,29 +269,7 @@ module.exports = function(grunt) {
 
   grunt.renameTask('regarde', 'watch');
 
-  grunt.registerTask('dev-server', function() {
-    var fs = require("fs");
-    var express = require("express");
-    var site = express();
-
-    console.log(process.argv);
-
-    // Serve static files
-    site.use("/", express.static(__dirname + '/.tmp'));
-    site.use("/", express.static(__dirname + '/app'));
-
-    // Ensure all routes go home, client side app..
-    site.get("*", function(req, res) {
-      fs.createReadStream(__dirname + "/app/index.html").pipe(res);
-    });
-
-    // Actually listen
-    console.log('Server listening on ' + (process.env.PORT || 8081));
-
-    module.exports = site;
-  });
-
-  grunt.registerTask('xxxserver', function(target) {
+  grunt.registerTask('server', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['connect:dist:keepalive']);
     }
@@ -289,6 +284,9 @@ module.exports = function(grunt) {
     ]);
   });
 
+  // builds the project in /dist
+  // target can be dev, staging, production
+  // these targets change which CDN URL to use, or none for dev
   grunt.registerTask('build', function(target) {
     var targets = [
       'jshint:with_overrides',
@@ -303,6 +301,7 @@ module.exports = function(grunt) {
       'usemin'
     ];
 
+    // allow building with different CDN URLs
     if (target === 'staging') {
       targets.push('cdn:staging');
     } else if (target !== 'dev') {
