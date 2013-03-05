@@ -37,9 +37,39 @@ Assuming you have `grunt-cli` and `bower` installed globally:
 
 ## Setting up the CDN
 
+1. Log into [https://mycloud.rackspace.com/](https://mycloud.rackspace.com/) with the `theglobalmail` account.
+2. Go to `Files` and click `Create Container` and use the project name as the name.
+3. Enable the CDN as a container
+4. Modify the TTL to be something short e.g. 900 (15 minutes as opposed to default 72 hours) for development.
+5. Note the HTTP link. This will be used as the CNAME for the project or as the
+   backend for Fast.ly.
+6. The CDN will not serve index.html as default index file. To enable it you must run the following (replaceing RACKSPACE_AUTH_KEY with the Rackspace API key): `curl -H "X-Auth-User: theglobalmail" -H "X-Auth-Key: RACKSPACE_AUTH_KEY" https://auth.api.rackspacecloud.com/v1.0/ -v`
+7. Look for `X-Auth-Token: XXXXXXXX-XXXX-XXXX-XXXX-XXXfXXXXXXXX` in the headers of the response.
+8. Use the token in this command (replace the token and the container name): `curl -X POST -H "X-Container-Meta-Web-Index: index.html" -H "X-Auth-Token: REPLACE_WITH_TOKEN" "https://storage101.dfw1.clouddrive.com/v1/MossoCloudFS_3d82889b-f53d-44ae-b198-bd722f87fff8/REPLACE_CONTAINER_NAME/" -v`
+9. Set up a CNAME entry in AWS Route53 for
+   `projectname-assets.theglobalmail.org` pointing to the CDN http domain.
+10. If push-state url support is not required, add another CNAME entry for the
+    main site pointing to the CDN.
+11. Repeat for any other environemnts i.e.
+    `projectname-staging-assets.theglobalmail.org`.
+
+Notes:
+* You can easily upload or modify files with CyberDuck if need be.
+* You can purge a file via CyberDuck or via the Rackspace interface. File
+purging is not instant.
 
 ## Setting up Fast.ly
 
+Fastly is only required if you need support for push-state urls. If not, skip
+this step.
+
+This process is difficult to describe. Use the `talkingheads` project as an
+example. The push-state relevant part is in the `Content` section and the
+`catch all` request configuration.
+
+The backend url should be the `-assets` domain pointing to the CDN.
+
+Create a CNAME entry in AWS Route53 for the site pointing to `prod.a.fastly.com`.
 
 ## Development server and building
 
