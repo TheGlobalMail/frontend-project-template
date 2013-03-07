@@ -85,11 +85,20 @@ The `dist/` folder isn't ignored by Git, so be careful not run it on a developme
 
 For staging, use a free Heroku instance so we don't have to worry about caching. For production, push directly to the CDN. Deployment is done on a throw-away branch.
 
+**Pushing to the CDN requires you to set a `RACKSPACE_API_KEY` enviroment variable.**
+
+### Deploying to the CDN
+1. `$ grunt` or `$ grunt build:staging`
+2. `$ grunt cloudfiles:[staging|dist]`
+3. `$ grunt clean:dist`
+
+
+### Deploying to Heroku
 1. `$ git checkout -b deploy`
-2. `grunt`
+2. `$ grunt build:staging`
 3. `$ git add dist/`
 4. `$ git commit -m "Build" dist/`
-5. `$ ./cdn-deploy.js [staging|production] {RACKSPACE_API_KEY}`
+5. `$ grunt cloudfiles:staging`
 6. *Staging only* `$ git push heroku deploy:master --force`
 7. `$ git checkout master`
 8. `$ git branch -D deploy`
