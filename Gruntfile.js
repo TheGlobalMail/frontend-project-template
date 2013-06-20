@@ -364,7 +364,10 @@ module.exports = function(grunt) {
       return;
     }
 
-    tasks.push(targetToTask[target]);
+    tasks = tasks.concat([
+      targetToTask[target],
+      'clean:dist'
+    ]);
 
     grunt.task.run(tasks);
   });
