@@ -4,7 +4,7 @@
 ## Starting a new project
 
 1. `$ git clone --depth 1 -o template git@github.com:TheGlobalMail/frontend-project-template.git new-project`
-   This will clone the template into `./new-project` without history and the remote is named `templated` (isntead of `origin`)
+   This will clone the template into `./new-project` without history and the remote is named `template` (instead of `origin`)
 2. *Optional.* Immediately checkout master to a template branch (`$ git checkout -b _template template/master`)... this will serve as a middleman for integrating changes back-and-forth between the project and the template. Switch back to master.
 3. Update `name` in `component.json` and `package.json`. Update this `README.md` stripping out this info, updating the title, etc. Update `<title/>` in `app/index.html`.
 4. Commit the name changes
@@ -43,14 +43,14 @@ Assuming you have `grunt-cli` and `bower` installed globally:
 4. Modify the TTL to be something short e.g. 900 (15 minutes as opposed to default 72 hours) for development.
 5. Note the HTTP link. This will be used as the CNAME for the project or as the
    backend for Fast.ly.
-6. The CDN will not serve index.html as default index file. To enable it you must run the following (replaceing RACKSPACE_AUTH_KEY with the Rackspace API key): `curl -H "X-Auth-User: theglobalmail" -H "X-Auth-Key: RACKSPACE_AUTH_KEY" https://auth.api.rackspacecloud.com/v1.0/ -v`
+6. The CDN will not serve index.html as default index file. To enable it you must run the following (replacing RACKSPACE_AUTH_KEY with the Rackspace API key): `curl -H "X-Auth-User: theglobalmail" -H "X-Auth-Key: RACKSPACE_AUTH_KEY" https://auth.api.rackspacecloud.com/v1.0/ -v`
 7. Look for `X-Auth-Token: XXXXXXXX-XXXX-XXXX-XXXX-XXXfXXXXXXXX` in the headers of the response.
 8. Use the token in this command (replace the token and the container name): `curl -X POST -H "X-Container-Meta-Web-Index: index.html" -H "X-Auth-Token: REPLACE_WITH_TOKEN" "https://storage101.dfw1.clouddrive.com/v1/MossoCloudFS_3d82889b-f53d-44ae-b198-bd722f87fff8/REPLACE_CONTAINER_NAME/" -v`
 9. Set up a CNAME entry in AWS Route53 for
    `projectname-assets.theglobalmail.org` pointing to the CDN http domain.
 10. If push-state url support is not required, add another CNAME entry for the
     main site pointing to the CDN.
-11. Repeat for any other environemnts i.e.
+11. Repeat for any other environments i.e.
     `projectname-staging-assets.theglobalmail.org`.
 
 Notes:
