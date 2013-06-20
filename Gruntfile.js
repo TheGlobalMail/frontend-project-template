@@ -3,6 +3,11 @@
 var fs = require('fs');
 var path = require('path');
 
+try { // API key to automate deploys to the CDN
+  var config = require('./config.json');
+  process.env['RACKSPACE_API_KEY'] = config['RACKSPACE_API_KEY'];
+} catch (e) {}
+
 // Project folders (relative to this Gruntfile)
 var project = {
   app: 'app',
@@ -46,6 +51,8 @@ var serveIndex = function(req, res) {
 
 // Grunt!!!
 module.exports = function(grunt) {
+  var _ = grunt.util._;
+
   // Look in package.json for grunt devDependencies and load them into grunt
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
@@ -333,6 +340,34 @@ module.exports = function(grunt) {
 
   // TODO: Testing
   grunt.registerTask('test');
+
+  grunt.registerTask('deploy', function(target) {
+    // Build and deploy
+
+    var tasks = [
+      'build'
+    ];
+
+    if (process.env['RACKSPACE_API_KEY'] === undefined) {
+      grunt.log.error('Specify the `RACKSPACE_API_KEY` property in local_config.json');
+      return;
+    }
+
+    // Deploy targets
+    var targetToTask = {
+      'production': 'cloudfiles:dist',
+      'staging': 'cloudfiles:staging'
+    };
+
+    if (targetToTask[target] === undefined) {
+      grunt.log.error('Select a target destination from: ' + _(targetToTask).keys().join(', '));
+      return;
+    }
+
+    tasks.push(targetToTask[target]);
+
+    grunt.task.run(tasks);
+  });
 
   // default is run if you invoke grunt without a target
   grunt.registerTask('default', 'build');
