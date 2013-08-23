@@ -1,7 +1,7 @@
 {
-  "name": "front-end-project-template",
+  "name": "tgm-vote-preferencing",
   "version": "0.0.0",
-  "description": "Template repository for front-end projects",
+  "description": "Vote preferencing visualisation",
   "main": "server.js",
   "devDependencies": {
     "grunt": "~0.4.0",
@@ -29,7 +29,7 @@
     "test": "grunt test"
   },
   "repository": "",
-  "author": "Andrew Cobby <andrew.cobby@gmail.com>",
+  "author": "The Global Mail <info@theglobalmail.org>",
   "dependencies": {
     "express": "~3.1.0"
   },
